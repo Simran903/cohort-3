@@ -8,7 +8,7 @@ let courses = [];
 let nextId = 1;
 
 // add todo
-app.post("/allCourses", (req, res) => {
+app.post("/addtodo", (req, res) => {
   const { name, price } = req.body;
   const newCourse = { id: nextId++, name, price };
   courses.push(newCourse);
@@ -16,12 +16,12 @@ app.post("/allCourses", (req, res) => {
 });
 
 // get all todos
-app.get("/allCourses", (req, res) => {
+app.get("/alltodos", (req, res) => {
   res.status(200).send(courses);
 });
 
 // get todo with id
-app.get("/allCourses/:id", (req, res) => {
+app.get("/alltodos/:id", (req, res) => {
   const data = courses.find((c) => c.id === parseInt(req.params.id));
   if (!data) {
     return res.status(404).send("Course is not listed");
@@ -30,7 +30,7 @@ app.get("/allCourses/:id", (req, res) => {
 });
 
 // update todo
-app.put("/allCourses/:id", (req, res) => {
+app.put("/alltodos/:id", (req, res) => {
   const data = courses.find((c) => c.id === parseInt(req.params.id));
   if (!data) {
     return res.status(404).send("Course is not listed");
@@ -42,7 +42,7 @@ app.put("/allCourses/:id", (req, res) => {
 });
 
 // delete todo
-app.delete("/allCourses/:id", (req, res) => {
+app.delete("/alltodos/:id", (req, res) => {
   const data = courses.findIndex((c) => c.id === parseInt(req.params.id));
   if (data === -1) {
     return res.status(404).send("Course is not listed");
