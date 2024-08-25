@@ -4,51 +4,51 @@ const app = express();
 const port = 5000;
 app.use(express.json());
 
-let courses = [];
+let todos = [];
 let nextId = 1;
 
-// add todo
-app.post("/addtodo", (req, res) => {
-  const { name, price } = req.body;
-  const newCourse = { id: nextId++, name, price };
-  courses.push(newCourse);
-  res.status(200).send(newCourse);
+// Create a new todo
+app.post("/todos", (req, res) => {
+  const { title, completed = false } = req.body;
+  const newTodo = { id: nextId++, title, completed };
+  todos.push(newTodo);
+  res.status(201).send(newTodo);
 });
 
-// get all todos
-app.get("/alltodos", (req, res) => {
-  res.status(200).send(courses);
+// Get all todos
+app.get("/todos", (req, res) => {
+  res.status(200).send(todos);
 });
 
-// get todo with id
-app.get("/alltodos/:id", (req, res) => {
-  const data = courses.find((c) => c.id === parseInt(req.params.id));
-  if (!data) {
-    return res.status(404).send("Course is not listed");
+// Get a specific todo by id
+app.get("/todos/:id", (req, res) => {
+  const todo = todos.find((t) => t.id === parseInt(req.params.id));
+  if (!todo) {
+    return res.status(404).send("Todo not found");
   }
-  res.status(200).send(data);
+  res.status(200).send(todo);
 });
 
-// update todo
-app.put("/alltodos/:id", (req, res) => {
-  const data = courses.find((c) => c.id === parseInt(req.params.id));
-  if (!data) {
-    return res.status(404).send("Course is not listed");
+// Update a todo by id
+app.put("/todos/:id", (req, res) => {
+  const todo = todos.find((t) => t.id === parseInt(req.params.id));
+  if (!todo) {
+    return res.status(404).send("Todo not found");
   }
-  const { name, price } = req.body;
-  data.name = name;
-  data.price = price;
-  res.status(200).send(data);
+  const { title, completed } = req.body;
+  if (title !== undefined) todo.title = title;
+  if (completed !== undefined) todo.completed = completed;
+  res.status(200).send(todo);
 });
 
-// delete todo
-app.delete("/alltodos/:id", (req, res) => {
-  const data = courses.findIndex((c) => c.id === parseInt(req.params.id));
-  if (data === -1) {
-    return res.status(404).send("Course is not listed");
+// Delete a todo by id
+app.delete("/todos/:id", (req, res) => {
+  const index = todos.findIndex((t) => t.id === parseInt(req.params.id));
+  if (index === -1) {
+    return res.status(404).send("Todo not found");
   }
-  courses.splice(data, 1);
-  return res.status(200).send("Course deleted");
+  todos.splice(index, 1);
+  res.status(200).send("Todo deleted");
 });
 
 app.listen(port, () => {
