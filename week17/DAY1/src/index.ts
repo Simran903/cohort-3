@@ -5,7 +5,7 @@ const app = express();
 
 app.use(express.json());
 
-const pgClient = new Client("postgresql://neondb_owner:npg_56JMrIRbSGDi@ep-bold-smoke-a5me16vh-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require");
+const pgClient = new Client("postgresql://neondb_owner:PASSWORD@ep-bold-smoke-a5me16vh-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require");
 pgClient.connect();
 
 app.post('/signup', async (req, res) => {
